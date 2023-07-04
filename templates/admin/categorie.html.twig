@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestions des categories{% endblock %}
+
+{% block body %}
+<h2 class="mt-3">Gestions des Categories</h2>
+
+<div class="row mt-3">
+    <div class="col-12 col-md-6 mt-2">
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        {% endfor %}
+        <div class="card">
+            <div class="card-header">Enregistrer une categorie</div>
+            <div class="card-body">
+                {{form_start(form)}}
+                {{form_widget(form)}}
+                <input type="submit" class="btn btn-success mt-3" value="Enregistrer">
+                {{form_end(form)}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 mt-2">
+        <h6>Listes des categories</h6>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nom du categorie</th>
+                        <th>Slug</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if categories %}
+                    {% for categorie in categories %}
+                    <tr>
+                        <td>{{categorie.nom}}</td>
+                        <td>{{categorie.slug}}</td>
+                        <td>
+                            <form action="{{path('delete-categorie',{'id':categorie.id})}}" method="post"
+                                onsubmit="return confirm('Vous voulez supprimer la categorie ?')">
+                                <input type="submit" value="Supprimer" class="btn btn-sm btn-danger">
+                            </form>
+                        </td>
+                        <td><a href="{{path('edit-categorie',{'id':categorie.id})}}"
+                                class="btn btn-sm btn-warning">Modifier</a></td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="4">
+                            <p class="text-danger">Aucune Categorie enregistrer</p>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
